@@ -50,6 +50,28 @@ responsable VARCHAR(200)
 );
 -- TABLAS CON FK
 
+CREATE TABLE productos(
+id_producto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_numero_de_factura_de_compra INT,
+id_categoria_de_producto INT,
+nombre_producto VARCHAR(200) NOT NULL,
+precio DECIMAL (10,2),
+cantidad INT,
+FOREIGN KEY (id_numero_de_factura_de_compra) REFERENCES facturas_de_compra(id_numero_de_factura_de_compra),
+FOREIGN KEY (id_categoria_de_producto) REFERENCES categoria_de_producto(id_categoria_de_producto)
+);
+
+CREATE TABLE detalle_de_compra(
+id_detalle_compra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_numero_de_factura_de_compra INT,
+id_producto INT,
+cantidad INT,
+precio DECIMAL(10,2),
+subtotal DECIMAL (10,2),
+FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+FOREIGN KEY (id_numero_de_factura_de_compra) REFERENCES facturas_de_compra(id_numero_de_factura_de_compra)
+);
+
 CREATE TABLE proveedores(
 id_proveedor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 id_producto INT,
@@ -58,36 +80,35 @@ fecha DATETIME DEFAULT(CURRENT_TIMESTAMP),
 numero_de_pedido INT,
 detalles VARCHAR(200),
 forma_de_pago ENUM ("CONTADO","A 30 DIAS", "A 60 DIAS"),
-estado_del_pago ENUM("PAGADO","PENDIENTE")
+estado_del_pago ENUM("PAGADO","PENDIENTE"),
+FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+FOREIGN KEY (id_categoria_de_producto) REFERENCES categoria_de_producto(id_categoria_de_producto)
 );
-
-
-CREATE TABLE productos(
-id_producto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-id_numero_de_factura_de_compra INT,
-id_categoria_de_producto INT,
-nombre_producto VARCHAR(200) NOT NULL,
-precio DECIMAL (10,2),
-cantidad INT
-);
-
 
 CREATE TABLE stock(
 id_stock INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 id_producto INT,
 id_centro_de_almacenamiento INT,
 precio DECIMAL(10,2),
-cantidad_stock INT
+cantidad_stock INT,
+FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+FOREIGN KEY (id_centro_de_almacenamiento) REFERENCES centro_de_almacenamiento(id_centro_de_almacenamiento)
 );
 
 CREATE TABLE ventas(
 id_venta INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 id_cliente INT,
+id_vendedor INT,
 id_categoria_de_producto INT,
+id_num_factura_venta INT,
 nombre_cliente VARCHAR(200),
 precio_venta DECIMAL(10,2),
 cantidad INT,
-total_venta DECIMAL(10,2)
+total_venta DECIMAL(10,2),
+FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente),
+FOREIGN KEY (id_categoria_de_producto) REFERENCES categoria_de_producto(id_categoria_de_producto),
+FOREIGN KEY (id_vendedor) REFERENCES vendedor(id_vendedor),
+FOREIGN KEY (id_num_factura_venta) REFERENCES facturas_de_venta(id_num_factura_venta)
 );
 
 
@@ -101,22 +122,9 @@ estado_del_reclamo ENUM("RESUELTO","EN PROGRESO","EN ESPERA"),
 prioridad ENUM("ALTA","MEDIA","BAJA"),
 cantidad_de_reclamos INT,
 respuesta VARCHAR(200),
-fecha_de_resolucion DATETIME DEFAULT(CURRENT_TIMESTAMP)
+fecha_de_resolucion DATETIME DEFAULT(CURRENT_TIMESTAMP),
+FOREIGN KEY (id_venta) REFERENCES ventas(id_venta)
 );
-
-
-
-CREATE TABLE detalle_de_compra(
-id_detalle_compra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-id_numero_de_factura_de_compra INT,
-id_producto INT,
-cantidad INT,
-precio DECIMAL(10,2),
-subtotal DECIMAL (10,2)
-);
-
-
-
 
 CREATE TABLE detalle_de_venta(
 id_detalle_de_venta INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -128,37 +136,15 @@ precio DECIMAL(10,2),
 descuento DECIMAL(10,2),
 subtotal DECIMAL(10,2),
 tipo_venta ENUM("ONLINE","FISICA"),
-nombre_cliente VARCHAR(200)
+nombre_cliente VARCHAR(200),
+FOREIGN KEY (id_venta) REFERENCES ventas(id_venta),
+FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
 
 
 
--- Referencias
 
 
 
-ALTER TABLE proveedores ADD CONSTRAINT fk_constraint_id_producto FOREIGN KEY (id_producto) REFERENCES productos(id_producto);
-ALTER TABLE proveedores ADD CONSTRAINT fk_constraint_id_categoria_de_producto FOREIGN KEY (id_categoria_de_producto) REFERENCES categoria_de_producto(id_categoria_de_producto);
-
-ALTER TABLE productos ADD CONSTRAINT fk_constraint_id_numero_de_factura_de_compra FOREIGN KEY (id_numero_de_factura_de_compra) REFERENCES facturas_de_compra(id_numero_de_factura_de_compra);
-ALTER TABLE productos ADD CONSTRAINT fk_constraint_id_categoria_de_producto FOREIGN KEY (id_categoria_de_producto) REFERENCES categoria_de_producto(id_categoria_de_producto);
 
 
-ALTER TABLE stock ADD CONSTRAINT fk_constraint_id_producto FOREIGN KEY (id_producto) REFERENCES productos(id_productos);
-ALTER TABLE stock ADD CONSTRAINT fk_constraint_id_centro_de_almacenamiento FOREIGN KEY (id_centro_de_almacenamiento) REFERENCES centro_de_almacenamiento(id_centro_de_almacenamiento);
-
-
-ALTER TABLE ventas ADD CONSTRAINT fk_constraint_id_cliente FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente);
-ALTER TABLE ventas ADD CONSTRAINT fk_constraint_id_categoria_de_producto FOREIGN KEY (id_categoria_de_producto) REFERENCES categoria_de_producto(id_categoria_de_producto);
-
-
-ALTER TABLE postventa ADD CONSTRAINT fk_constraint_id_venta FOREIGN KEY (id_venta) REFERENCES ventas(id_venta);
-
-
-ALTER TABLE detalle_de_compra ADD CONSTRAINT fk_constraint_id_producto FOREIGN KEY (id_producto) REFERENCES productos(id_productos);
-ALTER TABLE detalle_de_compra ADD CONSTRAINT fk_constraint_id_numero_de_factura_de_compra FOREIGN KEY (id_numero_de_factura_de_compra) REFERENCES facturas_de_compra(id_numero_de_factura_de_compra);
-
-
-ALTER TABLE detalle_de_venta ADD CONSTRAINT fk_constraint_id_venta FOREIGN KEY (id_venta) REFERENCES ventas(id_venta);
-ALTER TABLE detalle_de_venta ADD CONSTRAINT fk_constraint_id_producto FOREIGN KEY (id_producto) REFERENCES productos(id_productos);
-ALTER TABLE detalle_de_venta ADD CONSTRAINT fk_constraint_id_num_factura_venta FOREIGN KEY (id_num_factura_venta) REFERENCES detalle_de_venta(id_num_factura_venta);

@@ -1,15 +1,14 @@
-## MI PRIMER DER EXCALIDRAW
+## MI PRIMER DER - EXCALIDRAW
 ![image](https://github.com/user-attachments/assets/cc01f4a4-3acf-404a-af70-6036922d2a7e)
 
 
 ## DESARROLLO TEORICO - PRESENTACIÓN
 https://www.canva.com/design/DAGU3XvVhrI/LJ90pXHF-jiMnAlSKxnazw/edit?utm_content=DAGU3XvVhrI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
-## DER WORKBENCH 
+## DER - WORKBENCH 
 ![image](https://github.com/user-attachments/assets/8501eac6-c2a7-449c-9d16-d58ab83fa9d5)
 
-##DOCUMENTACIÓN
-# Base de Datos: El Cuervo PetShop
+## DOCUMENTACIÓN -  El Cuervo PetShop
 
 ## Descripción
 Este proyecto de base de datos está diseñado para gestionar las operaciones de ventas, compras y postventa de **El Cuervo PetShop**. La base de datos permite almacenar y organizar información de clientes, proveedores, vendedores, productos, y reclamos postventa. Su estructura facilita la administración del inventario, la auditoría de transacciones, y el seguimiento de interacciones con clientes.

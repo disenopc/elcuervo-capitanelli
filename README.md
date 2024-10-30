@@ -11,7 +11,7 @@ https://www.canva.com/design/DAGU3XvVhrI/LJ90pXHF-jiMnAlSKxnazw/edit?utm_content
 ## DOCUMENTACIÓN -  El Cuervo PetShop
 
 ## Descripción
-Este proyecto de base de datos está diseñado para gestionar las operaciones de ventas, compras y postventa de **El Cuervo PetShop**. La base de datos permite almacenar y organizar información de clientes, proveedores, vendedores, productos, y reclamos postventa. Su estructura facilita la administración del inventario, la auditoría de transacciones, y el seguimiento de interacciones con clientes.
+Este proyecto está diseñado para gestionar las operaciones de ventas, compras y postventa de **El Cuervo PetShop**. La base de datos permite almacenar y organizar información de clientes, proveedores, vendedores, productos, y reclamos postventa. Su estructura facilita la administración del inventario, la auditoría de transacciones, y el seguimiento de interacciones con clientes.
 
 ---
 
